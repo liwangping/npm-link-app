@@ -78,6 +78,7 @@ export default merge(baseConfig, {
       },
       {
         test: /\.global\.css$/,
+        exclude: /node_modules/,
         use: [
           {
             loader: 'style-loader',
@@ -92,6 +93,7 @@ export default merge(baseConfig, {
       },
       {
         test: /^((?!\.global).)*\.css$/,
+        exclude: /node_modules/,
         use: [
           {
             loader: 'style-loader',
@@ -102,6 +104,37 @@ export default merge(baseConfig, {
               modules: {
                 localIdentName: '[name]__[local]__[hash:base64:5]',
               },
+              sourceMap: true,
+              importLoaders: 1,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.global\.css$/,
+        include: /node_modules/,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
+      },
+      {
+        test: /^((?!\.global).)*\.css$/,
+        include: /node_modules/,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
               sourceMap: true,
               importLoaders: 1,
             },
@@ -148,6 +181,49 @@ export default merge(baseConfig, {
           },
           {
             loader: 'sass-loader',
+          },
+        ],
+      },
+      // less
+      {
+        test: /\.global\.(less)$/,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+          {
+            loader: 'less-loader',
+          },
+        ],
+      },
+      // LESS support - compile all other .scss files and pipe it to style.css
+      {
+        test: /^((?!\.global).)*\.(less)$/,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: '@teamsupercell/typings-for-css-modules-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                localIdentName: '[name]__[local]__[hash:base64:5]',
+              },
+              sourceMap: true,
+              importLoaders: 1,
+            },
+          },
+          {
+            loader: 'less-loader',
           },
         ],
       },
